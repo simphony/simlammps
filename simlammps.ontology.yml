@@ -1,0 +1,179 @@
+author: Pablo de Andres <pablo.de.andres@iwm.fraunhofer.de>, Fraunhofer IWM
+version: '2.3'
+namespace: simlammps_ontology
+ontology:
+
+  hasPart:
+    default_rel: true
+    description: default relationship
+    inverse: simlammps_ontology.isPartOf
+    subclass_of:
+    - cuba.activeRelationship
+
+  isPartOf:
+    description: inverse of the default relationship
+    inverse: simlammps_ontology.hasPart
+    subclass_of:
+    - cuba.passiveRelationship
+
+  Video:
+    subclass_of:
+    - cuba.Entity
+    attributes:
+      simlammps_ontology.name: null
+      simlammps_ontology.steps: null
+      simlammps_ontology.width: 640
+      simlammps_ontology.height: 480
+
+  SimlammpsWrapper:
+    subclass_of:
+    - cuba.Wrapper
+
+  Atom:
+    subclass_of:
+    - cuba.Entity
+
+  BoundaryCondition:
+    subclass_of:
+    - cuba.Entity
+
+  Face:
+    attributes:
+      simlammps_ontology.vector: null
+    subclass_of:
+    - cuba.Entity
+
+  FaceX:
+    subclass_of:
+    - simlammps_ontology.Face
+
+  FaceY:
+    subclass_of:
+    - simlammps_ontology.Face
+
+  FaceZ:
+    subclass_of:
+    - simlammps_ontology.Face
+
+  Fixed:
+    description: fixed boundary condition
+    subclass_of:
+    - simlammps_ontology.BoundaryCondition
+
+  Force:
+    attributes:
+      simlammps_ontology.vector: null
+    subclass_of:
+    - cuba.Entity
+
+  IntegrationTime:
+    attributes:
+      simlammps_ontology.steps: null
+    subclass_of:
+    - cuba.Entity
+
+  LennardJones612:
+    attributes:
+      simlammps_ontology.cutoffDistance: 1.0
+      simlammps_ontology.energyWellDepth: 1.0
+      simlammps_ontology.vanDerWaalsRadius: 1.0
+    description: A Lennard-Jones 6-12 Potential
+    subclass_of:
+    - cuba.Entity
+
+  Mass:
+    attributes:
+      simlammps_ontology.value: null
+    subclass_of:
+    - cuba.Entity
+
+  Material:
+    subclass_of:
+    - cuba.Entity
+
+  MolecularDynamics:
+    subclass_of:
+    - cuba.Entity
+
+  Periodic:
+    description: periodic boundary condition
+    subclass_of:
+    - simlammps_ontology.BoundaryCondition
+
+  Position:
+    attributes:
+      simlammps_ontology.vector: null
+    subclass_of:
+    - cuba.Entity
+
+  SimulationBox:
+    attributes:
+      simlammps_ontology.name: simulation_box
+    subclass_of:
+    - cuba.Entity
+
+  SolverParameter:
+    subclass_of:
+    - cuba.Entity
+
+  Thermostat:
+    subclass_of:
+    - cuba.Entity
+
+  Velocity:
+    attributes:
+      simlammps_ontology.vector: null
+    subclass_of:
+
+    - cuba.Entity
+  Verlet:
+    subclass_of:
+    - cuba.Entity
+
+  #########################
+
+  value:
+    subclass_of:
+    - cuba.attribute
+
+  cutoffDistance:
+    description: Cutoff distance
+    subclass_of:
+    - simlammps_ontology.value
+
+  energyWellDepth:
+    description: Energy well depth
+    subclass_of:
+    - simlammps_ontology.value
+
+  name:
+    subclass_of:
+    - simlammps_ontology.value
+
+  steps:
+    datatype: INT
+    description: steps of a simulation
+    subclass_of:
+    - simlammps_ontology.value
+
+  height:
+    datatype: INT
+    description: height (pixels) of the output video
+    subclass_of:
+    - simlammps_ontology.value
+
+  width:
+    datatype: INT
+    description: width (pixels) of the output video
+    subclass_of:
+    - simlammps_ontology.value
+
+  vanDerWaalsRadius:
+    description: van der waals radius
+    subclass_of:
+    - simlammps_ontology.value
+
+  vector:
+    datatype: VECTOR:3
+    subclass_of:
+    - simlammps_ontology.value

@@ -1,0 +1,15 @@
+__pycache__/
+build/
+dist/
+*~*
+.vscode/
+.mypy_cache/
+coverage.xml
+.coverage
+
+## User defined
+.eggs/
+simphony_lammps.egg-info/
+*.mp4
+log.lammps
+lammps

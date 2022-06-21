@@ -1,0 +1,31 @@
+image: "registry.gitlab.cc-asp.fraunhofer.de/simphony/wrappers/simlammps:latest"
+
+stages:
+  - code_analysis
+  - build
+
+pep8:
+  stage: code_analysis
+  script:
+    - flake8 . --exclude=*/__init__.py
+
+build_job:
+  stage: build
+  script:
+    - verlte() { [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]; }
+    - verlt() { [ "$1" = "$2" ] && return 1 || verlte $1 $2; }
+    - OSP_CORE_MIN=$(python -c "import packageinfo; print(packageinfo.OSP_CORE_MIN)")
+    - OSP_CORE_MAX=$(python -c "import packageinfo; print(packageinfo.OSP_CORE_MAX)")
+    - git clone https://github.com/simphony/osp-core.git
+    - cd osp-core
+    - OSP_CORE_VERSION=$(python -c "import packageinfo; print(packageinfo.VERSION)")
+    - if ! (verlte $OSP_CORE_MIN $OSP_CORE_VERSION && verlt $OSP_CORE_VERSION $OSP_CORE_MAX)
+     then git checkout "v${OSP_CORE_MIN}-beta";
+     else git checkout dev;
+     fi
+    - pip3 install .
+    - cd ..
+    - pico install simlammps.ontology.yml
+    - pip3 install .
+    - export CI_RUNNING=true # To skip test that don't work on CI
+    - python3 setup.py test
