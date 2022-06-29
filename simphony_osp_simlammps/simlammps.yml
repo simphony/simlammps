@@ -1,0 +1,5 @@
+identifier: simlammps
+ontology_file: simlammps.ttl
+format: 'turtle'
+namespaces:
+    simlammps: https://www.simphony-project.eu/ontologies/simlammps#

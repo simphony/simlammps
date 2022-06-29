@@ -1,5 +1,5 @@
 FROM python:3.9
-LABEL maintainer="pablo.de.andres@fraunhofer.iwm.de"
+LABEL maintainer="simphony@fraunhofer.iwm.de"
 
 # Install requirements
 RUN apt-get update && \
@@ -15,7 +15,7 @@ RUN cmake  -C ../cmake/presets/basic.cmake -D BUILD_SHARED_LIBS=on -D LAMMPS_EXC
     cmake --install .
 
 # Install osp-core
-RUN pip install osp-core
+RUN pip install simphony-osp
 
 # Install simlammps
 WORKDIR /simphony/wrappers/simlammps

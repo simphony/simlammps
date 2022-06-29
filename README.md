@@ -1,74 +1,64 @@
 # Simlammps
-[![pipeline status](https://gitlab.cc-asp.fraunhofer.de/simphony/wrappers/simlammps/badges/master/pipeline.svg)](https://gitlab.cc-asp.fraunhofer.de/simphony/wrappers/simlammps/commits/master)
-[![coverage report](https://gitlab.cc-asp.fraunhofer.de/simphony/wrappers/simlammps/badges/master/coverage.svg)](https://gitlab.cc-asp.fraunhofer.de/simphony/wrappers/simlammps/commits/master)
 
-Wrapper for LAMMPS developed by the SimPhoNy group at Fraunhofer IWM
+SimPhoNy Wrapper for LAMMPS developed by the Materials Informatics team at
+Fraunhofer IWM.
 
-Copyright (c) 2014-2019, Adham Hashibon and Materials Informatics Team at Fraunhofer IWM.
+Copyright (c) 2014-2022, Adham Hashibon and Materials Informatics Team at
+Fraunhofer IWM.
 All rights reserved.
 Redistribution and use are limited to the scope agreed with the end user.
 No parts of this software may be used outside of this context.
 No redistribution is allowed without explicit written permission.
 
-Contact: [Pablo de Andres](mailto:pablo.de.andres@iwm.fraunhofer.de)
-
-## Requirements
-
-The SimLammps wrapper is built on top of the [OSP core](https://github.com/simphony/osp-core) package.
-The following table describes the version compatibility between these two packages.
-
-|__SimLammps__|__OSP core__|
-|:-----------:|:----------:|
-|    3.4.x    | 3.5.x-beta |
-|    3.3.x    | 3.3.4-beta |
-|    3.2.x    | 3.3.0-beta |
-|    3.1.x    | 3.2.x-beta |
-|    3.0.x    | 3.1.x-beta |
-|    2.0.0    |    2.0.x   |
-|    0.0.1    |    1.x.x   |
-
-The releases of OSP core are available [here](https://github.com/simphony/osp-core/releases).
+Contact: [SimPhoNy](mailto:simphony@iwm.fraunhofer.de@iwm.fraunhofer.de)
 
 ## Installation
-If LAMMPS is not installed in the system, you can install it by running in your console:
+
+This wrapper requires a working LAMMPS installation. If you are running
+Ubuntu or CentOS, you are lucky, as we have prepared a
+script that can install it for you.
 ```
-    ./install_engine
+    ./install_engine.sh
 ```
 
-If osp-core is not in the system, install it before:
-```
-    pip install git+https://github.com/simphony/osp-core.git
-```
+If you are running a different distribution or operating system, you will
+have to install it yourself. Please make sure that LAMMPS is installed before proceeding.
 
-__NOTE:__ Until a proper, stable version of the ontology with all the entities is available in OSP Core, a toy ontology for temporary usage is provided.
-```
-    # to install the simlammps ontology
-    pico install simlammps/simlammps.ontology.yml
-```
+The next step is to install the wrapper itself, you can do so by running:
 
-The package requires python 3 (tested for 3.7), installation is based on `setuptools`:
 ```
     # build and install simlammps
     pip install .
 ```
 
-## Documentation
-All information about SimPhoNy and its wrappers is available in the [SimPhoNy docs](https://simphony.readthedocs.io)
+This will also automatically pull and install the `simphony-osp` package
+from PyPI if necessary.
 
-The LAMMPS engine documentation can be visited [here](https://lammps.sandia.gov/).
+Finally, the wrapper requires an ontology to represent the entities with
+which it operates. Install it with the following command:
 
-## Directory structure
-- osp/wrappers/simlammps -- simlammps wrapper files.
-- tests -- unittesting of the code.
-- examples -- examples of usage.
+```
+    # to install the simlammps ontology
+    pico install simphony_osp_simlammps/simlammps.yml
+```
 
-## Docker
-We have prepared a Dockerfile with all the necessary requirements.
-Since osp-core is not public yet, a username and password are necessary to clone it.
-This is all simplified via a script called `docker_install.sh`
+__NOTE:__ Until a proper, stable version of the ontology with all the entities
+is available, a toy ontology for temporary usage is provided.
+
+### Docker
+
+Alternatively, you can run the wrapper from a Docker image. We have
+prepared a Dockerfile with all the necessary requirements.
 ```shell
     # Build it
     docker build -t simphony/simlammps .
-    # Run it (console entypoint)
+    # Run it (console entrypoint)
     docker run -ti --rm --entrypoint=/bin/bash simphony/simlammps
 ```
+
+
+## Documentation
+All information about SimPhoNy and its wrappers is available on the
+[SimPhoNy docs](https://simphony.readthedocs.io).
+
+The LAMMPS engine documentation can be visited [here](https://lammps.sandia.gov/).

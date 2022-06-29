@@ -1,39 +1,32 @@
-# Copyright (c) 2018, Adham Hashibon and Materials Informatics Team
-# at Fraunhofer IWM.
-# All rights reserved.
-# Redistribution and use are limited to the scope agreed with the end user.
-# No parts of this software may be used outside of this context.
-# No redistribution is allowed without explicit written permission.
+"""Utility function and classes for the LAMMPS wrapper."""
 
-# Utility function and classes for the lammps wrapper
+from typing import Dict, Iterable, Iterator, List, Optional, Tuple
 
 
-class LammpsInputScript:
-    """Class for parsing a Lammps input script."""
+class LAMMPSInputScript:
+    """Class for parsing a LAMMPS input script."""
 
     SECTIONS = ("Atoms", "Velocities", "Masses", "Bonds", "Pair Coeffs")
 
-    def __init__(self, filename):
-        """
-        Constructor.
+    def __init__(self, filename: str):
+        """Constructor.
 
-        :param filename: path to the input script
+        Args:
+            filename: path to the input script.
         """
         self._filename = filename
         self._content = None
 
-    def parse(self):
-        """
-        Parses the file, loading the content.
-        """
+    def parse(self) -> None:
+        """Parses the file, loading the content."""
         text = self._read_clean()
         self._content = self._split_into_sections(text)
 
-    def _read_clean(self):
-        """
-        Reads the file, ignoring comments
+    def _read_clean(self) -> Iterable[str]:
+        """Reads the file, ignoring comments.
 
-        :return loaded text as an list of lines
+        Returns:
+            Loaded text as a list of lines.
         """
         content = []
         with open(self._filename) as f:
@@ -43,11 +36,11 @@ class LammpsInputScript:
                     content.append(line)
         return content
 
-    def _split_into_sections(self, lines):
-        """
-        Splits the given text into the supported sections
+    def _split_into_sections(self, lines: Iterable) -> Dict[str, List[str]]:
+        """Splits the given text into the supported sections.
 
-        :param lines: list with the lines
+        Args:
+            lines: list with the lines.
         """
         output = {}
         section = "Header"
@@ -60,11 +53,11 @@ class LammpsInputScript:
                 output[section].append(line)
         return output
 
-    def atom_information_generator(self):
-        """
-        Iterator for the positions and velocities of the atoms.
+    def atom_information_generator(self) -> Iterator[Tuple[float, float]]:
+        """Iterator for the positions and velocities of the atoms.
 
-        :return an iterator of the position and velocity values
+        Returns:
+            An iterator of the position and velocity values.
         """
         positions = self._content["Atoms"]
         velocities = self._content["Velocities"]
@@ -73,11 +66,17 @@ class LammpsInputScript:
             vel = list(map(float, velocities[idx].split()[1:]))
             yield pos, vel
 
-    def box_coordinates(self):
-        """
-        Returns the coordinates of the box.
+    def box_coordinates(
+        self,
+    ) -> Tuple[
+        Optional[Tuple[float, int]],
+        Optional[Tuple[float, int]],
+        Optional[Tuple[float, int]],
+    ]:
+        """Returns the coordinates of the box.
 
-        :return: the coordinates (x, y, z) of the box
+        Returns:
+            The coordinates (x, y, z) of the box
         """
         x, y, z = None, None, None
         for line in self._content["Header"]:
