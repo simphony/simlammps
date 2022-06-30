@@ -42,7 +42,7 @@ setup(
     keywords="simphony, Fraunhofer IWM, LAMMPS, wrapper, simulation",
     packages=find_packages(exclude=("examples", "tests")),
     install_requires=[
-        "simphony-osp >= 4.0.0, < 5.0.0",
+        "simphony-osp >= 4.0.0rc1, < 4.0.0rc2",
     ],
     tests_require=[
         "unittest2",
