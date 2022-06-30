@@ -6,7 +6,7 @@ from typing import BinaryIO, Dict, List, Optional, Tuple
 
 import numpy as np
 from lammps import Atom, PyLammps
-from simphony_osp.development import Wrapper
+from simphony_osp.development import Wrapper, get_hash
 from simphony_osp.namespaces import owl, simlammps
 from simphony_osp.ontology import OntologyIndividual
 from simphony_osp.session import Session
@@ -150,8 +150,27 @@ class SimLammps(Wrapper):
             self._update_force_from_backend(individual)
 
     def load(self, key: str) -> BinaryIO:
-        """Given the IRI of a Video file object, yield its contents."""
+        """Given the IRI of a video file object, yield its contents."""
         return open(Path(self._videos[str(key)].name) / "video.mp4", "rb")
+
+    def rename(self, key: str, new_key: str) -> None:
+        """Change the IRI reference to a video file."""
+        if str(key) in self._videos:
+            self._videos[str(new_key)] = self._videos[str(key)]
+            del self._videos[str(key)]
+
+    def hash(self, key: str) -> str:
+        """Get the hash of a video file."""
+        return get_hash(str(Path(self._videos[str(key)].name) / "video.mp4"))
+
+    def delete(self, key: str) -> None:
+        """Delete a video file.
+
+        This function is just a placeholder, as the video file should not be
+        deleted (LAMMPS will continue writing to it). It will be deleted
+        when the session is closed.
+        """
+        pass
 
     # Interface
     # ↑ ----- ↑
