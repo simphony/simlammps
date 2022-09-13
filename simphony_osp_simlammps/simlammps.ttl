@@ -1,26 +1,26 @@
-@prefix : <https://www.simphony-project.eu/ontologies/simlammps#> .
+@prefix : <https://www.simphony-osp.eu/simlammps#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix simphony_types: <https://www.simphony-project.eu/types#> .
-@prefix simphony: <https://www.simphony-project.eu/simphony#> .
-@base <https://www.simphony-project.eu/ontologies/simlammps#> .
+@prefix simphony_types: <https://www.simphony-osp.eu/types#> .
+@prefix simphony: <https://www.simphony-osp.eu/simphony#> .
+@base <https://www.simphony-osp.eu/simlammps#> .
 
-<https://www.simphony-project.eu/ontologies/simlammps#> rdf:type owl:Ontology .
+<https://www.simphony-osp.eu/simlammps#> rdf:type owl:Ontology .
 
 #################################################################
 #    Object Properties
 #################################################################
 
-###  https://www.simphony-project.eu/ontologies/simlammps#hasPart
+###  https://www.simphony-osp.eu/simlammps#hasPart
 :hasPart rdf:type owl:ObjectProperty ;
          owl:inverseOf :isPartOf ;
          rdfs:label "has part"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#isPartOf
+###  https://www.simphony-osp.eu/simlammps#isPartOf
 :isPartOf rdf:type owl:ObjectProperty ;
           rdfs:label "is part of"@en .
 
@@ -29,19 +29,19 @@
 #    Data properties
 #################################################################
 
-###  https://www.simphony-project.eu/ontologies/simlammps#cutoffDistance
+###  https://www.simphony-osp.eu/simlammps#cutoffDistance
 :cutoffDistance rdf:type owl:DatatypeProperty ;
                 rdfs:subPropertyOf :value ;
                 rdfs:label "Cut-off distance"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#energyWellDepth
+###  https://www.simphony-osp.eu/simlammps#energyWellDepth
 :energyWellDepth rdf:type owl:DatatypeProperty ;
                  rdfs:subPropertyOf :value ;
                  rdfs:label "Energy well depth"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#height
+###  https://www.simphony-osp.eu/simlammps#height
 :height rdf:type owl:DatatypeProperty ;
         rdfs:subPropertyOf :value ;
         rdfs:range xsd:positiveInteger ;
@@ -49,7 +49,7 @@
         rdfs:label "Height"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#steps
+###  https://www.simphony-osp.eu/simlammps#steps
 :steps rdf:type owl:DatatypeProperty ;
        rdfs:subPropertyOf :value ;
        rdfs:range xsd:nonNegativeInteger ;
@@ -57,24 +57,24 @@
        rdfs:label "Steps"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#value
+###  https://www.simphony-osp.eu/simlammps#value
 :value rdf:type owl:DatatypeProperty .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#vanDerWaalsRadius
+###  https://www.simphony-osp.eu/simlammps#vanDerWaalsRadius
 :vanDerWaalsRadius rdf:type owl:DatatypeProperty ;
                    rdfs:subPropertyOf :value ;
                    rdfs:label "Van der Waals radius"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#vector
+###  https://www.simphony-osp.eu/simlammps#vector
 :vector rdf:type owl:DatatypeProperty ;
         rdfs:subPropertyOf :value ;
         rdfs:range simphony_types:Vector ;
         rdfs:label "Vector"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#width
+###  https://www.simphony-osp.eu/simlammps#width
 :width rdf:type owl:DatatypeProperty ;
        rdfs:subPropertyOf :value ;
        rdfs:range xsd:positiveInteger ;
@@ -86,17 +86,17 @@
 #    Classes
 #################################################################
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Atom
+###  https://www.simphony-osp.eu/simlammps#Atom
 :Atom rdf:type owl:Class ;
       rdfs:label "Atom"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#BoundaryCondition
+###  https://www.simphony-osp.eu/simlammps#BoundaryCondition
 :BoundaryCondition rdf:type owl:Class ;
                    rdfs:label "Boundary condition"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Face
+###  https://www.simphony-osp.eu/simlammps#Face
 :Face rdf:type owl:Class ;
        rdfs:subClassOf [ rdf:type owl:Restriction ;
                          owl:onProperty :vector ;
@@ -106,28 +106,28 @@
       rdfs:label "Face"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#FaceX
+###  https://www.simphony-osp.eu/simlammps#FaceX
 :FaceX rdf:type owl:Class ;
        rdfs:subClassOf :Face .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#FaceY
+###  https://www.simphony-osp.eu/simlammps#FaceY
 :FaceY rdf:type owl:Class ;
        rdfs:subClassOf :Face .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#FaceZ
+###  https://www.simphony-osp.eu/simlammps#FaceZ
 :FaceZ rdf:type owl:Class ;
        rdfs:subClassOf :Face .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Fixed
+###  https://www.simphony-osp.eu/simlammps#Fixed
 :Fixed rdf:type owl:Class ;
        rdfs:subClassOf :BoundaryCondition ;
        rdfs:label "Fixed boundary condition"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Force
+###  https://www.simphony-osp.eu/simlammps#Force
 :Force rdf:type owl:Class ;
        rdfs:subClassOf [ rdf:type owl:Restriction ;
                          owl:onProperty :vector ;
@@ -137,7 +137,7 @@
        rdfs:label "Force"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#IntegrationTime
+###  https://www.simphony-osp.eu/simlammps#IntegrationTime
 :IntegrationTime rdf:type owl:Class ;
                  rdfs:subClassOf [ rdf:type owl:Restriction ;
                                    owl:onProperty :steps ;
@@ -147,7 +147,7 @@
                  rdfs:label "Integration time"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#LennardJones612
+###  https://www.simphony-osp.eu/simlammps#LennardJones612
 :LennardJones612 rdf:type owl:Class ;
                  rdfs:subClassOf [ rdf:type owl:Restriction ;
                                    owl:onProperty :cutoffDistance ;
@@ -168,7 +168,7 @@
                  rdfs:label "Lennard-Jones 6-12"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Mass
+###  https://www.simphony-osp.eu/simlammps#Mass
 :Mass rdf:type owl:Class ;
       rdfs:subClassOf [ rdf:type owl:Restriction ;
                         owl:onProperty :value ;
@@ -178,23 +178,23 @@
       rdfs:label "Mass"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Material
+###  https://www.simphony-osp.eu/simlammps#Material
 :Material rdf:type owl:Class ;
           rdfs:label "Material"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#MolecularDynamics
+###  https://www.simphony-osp.eu/simlammps#MolecularDynamics
 :MolecularDynamics rdf:type owl:Class ;
                    rdfs:label "Molecular Dynamics"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Periodic
+###  https://www.simphony-osp.eu/simlammps#Periodic
 :Periodic rdf:type owl:Class ;
           rdfs:subClassOf :BoundaryCondition ;
           rdfs:label "Periodic boundary condition"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Position
+###  https://www.simphony-osp.eu/simlammps#Position
 :Position rdf:type owl:Class ;
           rdfs:subClassOf [ rdf:type owl:Restriction ;
                             owl:onProperty :vector ;
@@ -204,22 +204,22 @@
           rdfs:label "Position"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#SimulationBox
+###  https://www.simphony-osp.eu/simlammps#SimulationBox
 :SimulationBox rdf:type owl:Class ;
                rdfs:label "Simulation box"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#SolverParameter
+###  https://www.simphony-osp.eu/simlammps#SolverParameter
 :SolverParameter rdf:type owl:Class ;
                  rdfs:label "Solver parameter"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Thermostat
+###  https://www.simphony-osp.eu/simlammps#Thermostat
 :Thermostat rdf:type owl:Class ;
             rdfs:label "Thermostat"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Velocity
+###  https://www.simphony-osp.eu/simlammps#Velocity
 :Velocity rdf:type owl:Class ;
           rdfs:subClassOf [ rdf:type owl:Restriction ;
                             owl:onProperty :vector ;
@@ -229,12 +229,12 @@
           rdfs:label "Velocity"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Verlet
+###  https://www.simphony-osp.eu/simlammps#Verlet
 :Verlet rdf:type owl:Class ;
         rdfs:label "Verlet"@en .
 
 
-###  https://www.simphony-project.eu/ontologies/simlammps#Video
+###  https://www.simphony-osp.eu/simlammps#Video
 :Video rdf:type owl:Class ;
        rdfs:subClassOf simphony:File ;
        rdfs:subClassOf [ rdf:type owl:Restriction ;
