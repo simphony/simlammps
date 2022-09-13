@@ -1,4 +1,4 @@
-# Simlammps
+# SimLAMMPS
 
 SimPhoNy Wrapper for LAMMPS developed by the Materials Informatics team at
 Fraunhofer IWM.

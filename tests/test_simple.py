@@ -4,7 +4,7 @@ import unittest
 
 from simphony_osp.namespaces import simlammps
 from simphony_osp.session import Session
-from simphony_osp.wrappers import SimLammps
+from simphony_osp.wrappers import SimLAMMPS
 
 
 class TestSimple(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestSimple(unittest.TestCase):
 
     def setUp(self):
         """Configure the simulation inputs for the test."""
-        session = SimLammps()
+        session = SimLAMMPS()
         session.locked = True
 
         with session:

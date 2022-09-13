@@ -1,4 +1,4 @@
-"""Install SimLammps."""
+"""Install SimLAMMPS."""
 
 from setuptools import find_packages, setup
 
@@ -51,7 +51,7 @@ setup(
     test_suite="tests",
     entry_points={
         "simphony_osp.wrappers": {
-            "SimLammps = simphony_osp_simlammps.wrapper:SimLammps",
+            "SimLAMMPS = simphony_osp_simlammps.wrapper:SimLAMMPS",
         },
     },
 )

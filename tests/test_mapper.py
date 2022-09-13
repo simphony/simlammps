@@ -1,4 +1,4 @@
-"""Test the SimLammps mapper utility."""
+"""Test the SimLAMMPS mapper utility."""
 
 import unittest
 import uuid
@@ -11,7 +11,7 @@ IRI_PREFIX = "https://www.simphony-project.eu/entity#"
 
 
 class TestMapper(unittest.TestCase):
-    """Test the SimLammps mapper utility."""
+    """Test the SimLAMMPS mapper utility."""
 
     def test_creation(self):
         """Tests the instantiation of the mapper."""

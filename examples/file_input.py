@@ -1,11 +1,11 @@
 """Example showing how to set up a simulation using a LAMMPS script."""
 
 from simphony_osp.namespaces import simlammps
-from simphony_osp.wrappers import SimLammps
+from simphony_osp.wrappers import SimLAMMPS
 
 from simphony_osp_simlammps.utils import LAMMPSInputScript
 
-lammps_session = SimLammps("examples/data_input_from_sim.lammps")
+lammps_session = SimLAMMPS("examples/data_input_from_sim.lammps")
 lammps_session.locked = True
 
 with lammps_session:

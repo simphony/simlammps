@@ -3,7 +3,7 @@
 import itertools
 
 from simphony_osp.namespaces import simlammps
-from simphony_osp.wrappers import SimLammps
+from simphony_osp.wrappers import SimLAMMPS
 
 from simphony_osp_simlammps.utils import LAMMPSInputScript
 
@@ -36,7 +36,7 @@ def setup_box(parsed_file):
     box[simlammps.hasPart] += {face_x, face_y, face_z}
 
 
-session = SimLammps()
+session = SimLAMMPS()
 session.locked = True
 
 with session:

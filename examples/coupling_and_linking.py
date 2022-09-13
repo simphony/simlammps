@@ -2,12 +2,12 @@
 
 from simphony_osp.namespaces import simlammps
 from simphony_osp.session import Session
-from simphony_osp.wrappers import SimLammps
+from simphony_osp.wrappers import SimLAMMPS
 
 # create the wrappers
-session_a = SimLammps()
+session_a = SimLAMMPS()
 
-session_b = SimLammps()
+session_b = SimLAMMPS()
 
 with Session() as workspace:
 

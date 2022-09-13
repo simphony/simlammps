@@ -3,10 +3,10 @@
 from random import randint
 
 from simphony_osp.namespaces import simlammps
-from simphony_osp.wrappers import SimLammps
+from simphony_osp.wrappers import SimLAMMPS
 
 # create the wrapper
-session = SimLammps()
+session = SimLAMMPS()
 session.lock = True
 
 with session:

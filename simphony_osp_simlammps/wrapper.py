@@ -14,7 +14,7 @@ from simphony_osp.session import Session
 from simphony_osp_simlammps.mapper import Mapper
 
 
-class SimLammps(Wrapper):
+class SimLAMMPS(Wrapper):
     """LAMMPS wrapper implementation."""
 
     _engine: Optional[PyLammps] = None
