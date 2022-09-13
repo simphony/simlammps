@@ -1,16 +1,10 @@
 # SimLAMMPS
 
-SimPhoNy Wrapper for LAMMPS developed by the Materials Informatics team at
-Fraunhofer IWM.
+SimLAMMPS is a SimPhoNy wrapper that enables the use of the LAMMPS molecular 
+dynamics simulation engine on the SimPhoNy Open Simulation Platform.
 
-Copyright (c) 2014-2022, Adham Hashibon and Materials Informatics Team at
-Fraunhofer IWM.
-All rights reserved.
-Redistribution and use are limited to the scope agreed with the end user.
-No parts of this software may be used outside of this context.
-No redistribution is allowed without explicit written permission.
-
-Contact: [SimPhoNy](mailto:simphony@iwm.fraunhofer.de@iwm.fraunhofer.de)
+**Disclaimer**: We are **not** affiliated nor associated with the 
+[authors of LAMMPS](https://docs.lammps.org/Intro_authors.html).
 
 ## Installation
 
@@ -22,28 +16,30 @@ script that can install it for you.
 ```
 
 If you are running a different distribution or operating system, you will
-have to install it yourself. Please make sure that LAMMPS is installed before proceeding.
+have to install it yourself. Please make sure that LAMMPS is installed before 
+proceeding.
 
-The next step is to install the wrapper itself, you can do so by running:
+The next step is to install the wrapper itself. SimLAMMPS is available on PyPI,
+so it can be installed using the
+[`pip` package manager](https://pip.pypa.io/en/stable/), you can do so by 
+running:
 
-```
-    # build and install simlammps
-    pip install .
-```
-
-This will also automatically pull and install the `simphony-osp` package
-from PyPI if necessary.
-
-Finally, the wrapper requires an ontology to represent the entities with
-which it operates. Install it with the following command:
-
-```
-    # to install the simlammps ontology
-    pico install simphony_osp_simlammps/simlammps.yml
+```shell
+    pip install simphony-osp-simlammps
 ```
 
-__NOTE:__ Until a proper, stable version of the ontology with all the entities
-is available, a toy ontology for temporary usage is provided.
+Finally, the wrapper requires a specific ontology to operate. Download the 
+[ontology file](https://github.com/simphony/simlammps/blob/v4.0.0/simphony_osp_simlammps/simlammps.ttl)
+and 
+[ontology package](https://github.com/simphony/simlammps/blob/v4.0.0/simphony_osp_simlammps/simlammps.yml),
+then install the latter with the following command:
+
+```
+    pico install simlammps.yml
+```
+
+**Note:** The provided ontology is not connected to any 
+top-level ontology, therefore its scope is limited to this wrapper. 
 
 ### Docker
 
@@ -58,7 +54,22 @@ prepared a Dockerfile with all the necessary requirements.
 
 
 ## Documentation
-All information about SimPhoNy and its wrappers is available on the
-[SimPhoNy docs](https://simphony.readthedocs.io).
 
-The LAMMPS engine documentation can be visited [here](https://lammps.sandia.gov/).
+All information about SimPhoNy is available on the
+[SimPhoNy documentation](https://simphony.readthedocs.io/en/v4.0.0rc3). Check out the
+[examples folder](https://github.com/simphony/simlammps/blob/v4.0.0/examples)
+for examples on how to use SimLAMMPS itself.
+
+The LAMMPS engine documentation is available [here](https://lammps.sandia.gov/).
+
+## License
+
+Copyright (c) 2014-2022, Fraunhofer-Gesellschaft zur Förderung der angewandten
+Forschung e.V. acting on behalf of its Fraunhofer IWM.
+
+SimLAMMPS is distributed under the terms of the
+[GNU Public License Version 2](https://github.com/simphony/simlammps/blob/v4.0.0/LICENSE)
+as required 
+[by the license terms of LAMMPS itself](https://docs.lammps.org/Intro_opensource.html).
+
+Contact: [SimPhoNy](mailto:simphony@iwm.fraunhofer.de@iwm.fraunhofer.de)
