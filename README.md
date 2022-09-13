@@ -72,4 +72,4 @@ SimLAMMPS is distributed under the terms of the
 as required 
 [by the license terms of LAMMPS itself](https://docs.lammps.org/Intro_opensource.html).
 
-Contact: [SimPhoNy](mailto:simphony@iwm.fraunhofer.de@iwm.fraunhofer.de)
+Contact: [SimPhoNy](mailto:simphony@iwm.fraunhofer.de)
