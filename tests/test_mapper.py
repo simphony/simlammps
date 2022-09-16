@@ -1,29 +1,33 @@
-"""Test the SimLammps mapper utility."""
+"""Test the SimLAMMPS mapper utility."""
 
+import unittest
 import uuid
 
-import unittest2 as unittest
+from rdflib import URIRef
 
-import osp.wrappers.simlammps.mapper as mapper
+from simphony_osp_simlammps.mapper import Mapper
+
+IRI_PREFIX = "https://www.simphony-project.eu/entity#"
 
 
 class TestMapper(unittest.TestCase):
-    """Test the SimLammps mapper utility."""
+    """Test the SimLAMMPS mapper utility."""
 
     def test_creation(self):
         """Tests the instantiation of the mapper."""
-        map = mapper.Mapper()
-        self.assertFalse(map._to_cuds)
-        self.assertFalse(map._to_lammps)
+        maper = Mapper()
+        self.assertFalse(maper._to_ontology)
+        self.assertFalse(maper._to_lammps)
 
     def test_add(self):
         """Tests the standard, normal behaviour of the add() method."""
-        map = mapper.Mapper()
+        mapper = Mapper()
         uid = uuid.uuid4()
-        map.add(uid)
+        identifier = URIRef(IRI_PREFIX + str(uid))
+        mapper.add(identifier)
 
-        self.assertEqual(map._to_lammps, {uid: 0})
-        self.assertEqual(map._to_cuds, {0: uid})
+        self.assertEqual(mapper._to_lammps, {identifier: 0})
+        self.assertEqual(mapper._to_ontology, {0: identifier})
 
     def test_add_throws_exception(self):
         """Tests the add() method for unusual behaviours.
@@ -31,21 +35,23 @@ class TestMapper(unittest.TestCase):
         - Adding an object that is already there
         - Adding an unsupported object
         """
-        map = mapper.Mapper()
+        mapper = Mapper()
         uid = uuid.uuid4()
-        map.add(uid)
+        identifier = URIRef(IRI_PREFIX + str(uid))
+        mapper.add(identifier)
 
-        self.assertRaises(ValueError, map.add, uid)
-        self.assertRaises(TypeError, map.add, "key")
+        self.assertRaises(ValueError, mapper.add, identifier)
+        self.assertRaises(TypeError, mapper.add, "key")
 
     def test_get(self):
         """Tests the standard, normal behaviour of the get() method."""
-        map = mapper.Mapper()
+        mapper = Mapper()
         uid = uuid.uuid4()
-        map.add(uid)
+        identifier = URIRef(IRI_PREFIX + str(uid))
+        mapper.add(identifier)
 
-        self.assertEqual(map.get(uid), 0)
-        self.assertEqual(map.get(0), uid)
+        self.assertEqual(mapper.get(identifier), 0)
+        self.assertEqual(mapper.get(0), identifier)
 
     def test_get_throws_exception(self):
         """Tests the get() method for unusual behaviours.
@@ -53,29 +59,31 @@ class TestMapper(unittest.TestCase):
         - Getting with a wrong type
         - Getting with a key not in the mapper
         """
-        map = mapper.Mapper()
+        mapper = Mapper()
         uid = uuid.uuid4()
-        map.add(uid)
+        identifier = URIRef(IRI_PREFIX + str(uid))
+        mapper.add(identifier)
 
-        self.assertRaises(KeyError, map.get, "wrong key type")
-        self.assertRaises(KeyError, map.get, 1)
+        self.assertRaises(KeyError, mapper.get, "wrong key type")
+        self.assertRaises(KeyError, mapper.get, 1)
 
     def test_remove(self):
         """Tests the standard, normal behaviour of the remove() method."""
-        map = mapper.Mapper()
+        mapper = Mapper()
         uid = uuid.uuid4()
-        map.add(uid)
+        identifier = URIRef(IRI_PREFIX + str(uid))
+        mapper.add(identifier)
 
         # Remove by uid
-        map.remove(uid)
-        self.assertFalse(map._to_cuds)
-        self.assertFalse(map._to_lammps)
+        mapper.remove(identifier)
+        self.assertFalse(mapper._to_ontology)
+        self.assertFalse(mapper._to_lammps)
 
-        map.add(uid)
+        mapper.add(identifier)
         # Remove by lammps id
-        map.remove(0)
-        self.assertFalse(map._to_cuds)
-        self.assertFalse(map._to_lammps)
+        mapper.remove(0)
+        self.assertFalse(mapper._to_ontology)
+        self.assertFalse(mapper._to_lammps)
 
     def test_remove_throws_exception(self):
         """Tests the remove() method for unusual behaviours.
@@ -83,16 +91,19 @@ class TestMapper(unittest.TestCase):
         - Removing with a wrong key
         - Removing something non-existent
         """
-        map = mapper.Mapper()
+        mapper = Mapper()
         uid = uuid.uuid4()
-        map.add(uid)
+        identifier = URIRef(IRI_PREFIX + str(uid))
+        mapper.add(identifier)
 
-        self.assertRaises(KeyError, map.remove, "wrong key type")
-        self.assertRaises(KeyError, map.remove, 1)
-        self.assertRaises(KeyError, map.remove, uuid.uuid4())
+        self.assertRaises(KeyError, mapper.remove, "wrong key type")
+        self.assertRaises(KeyError, mapper.remove, 1)
+        self.assertRaises(
+            KeyError, mapper.remove, URIRef(IRI_PREFIX + str(uuid.uuid4()))
+        )
 
     def test_contains(self):
-        """Test the containment (x in Mapper)"""
+        """Test the containment (x in Mapper)."""
         pass
 
 

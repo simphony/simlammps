@@ -1,103 +1,107 @@
-from osp.core.namespaces import simlammps_ontology
+"""Example showing how to couple and link simulations with the wrapper."""
 
-from osp.wrappers.simlammps import SimlammpsSession
+from simphony_osp.namespaces import simlammps
+from simphony_osp.session import Session
+from simphony_osp.wrappers import SimLAMMPS
 
 # create the wrappers
-sess_a = SimlammpsSession()
-wrapper_a = simlammps_ontology.SimlammpsWrapper(session=sess_a)
+session_a = SimLAMMPS()
 
-sess_b = SimlammpsSession()
-wrapper_b = simlammps_ontology.SimlammpsWrapper(session=sess_b)
+session_b = SimLAMMPS()
 
-# define a material:
-mass = simlammps_ontology.Mass(value=0.2)
+with Session() as workspace:
 
-material_a = simlammps_ontology.Material()
-material_b = simlammps_ontology.Material()
+    # define a material:
+    mass = simlammps.Mass(value=0.2)
 
-material_a.add(mass)
-material_b.add(mass)
+    material_a = simlammps.Material()
+    material_b = simlammps.Material()
 
-# create a simulation box
-box = simlammps_ontology.SimulationBox()
-face_x = simlammps_ontology.FaceX(vector=(7, 0, 0))
-face_x.add(simlammps_ontology.Periodic())
-face_y = simlammps_ontology.FaceY(vector=(0, 7, 0))
-face_y.add(simlammps_ontology.Periodic())
-face_z = simlammps_ontology.FaceZ(vector=(0, 0, 7))
-face_z.add(simlammps_ontology.Periodic())
-box.add(face_x, face_y, face_z)
+    material_a[simlammps.hasPart] += mass
+    material_b[simlammps.hasPart] += mass
 
+    # create a simulation box
+    box = simlammps.SimulationBox()
+    face_x = simlammps.FaceX(vector=(7, 0, 0))
+    face_x[simlammps.hasPart] += simlammps.Periodic()
+    face_y = simlammps.FaceY(vector=(0, 7, 0))
+    face_y[simlammps.hasPart] += simlammps.Periodic()
+    face_z = simlammps.FaceZ(vector=(0, 0, 7))
+    face_z[simlammps.hasPart] += simlammps.Periodic()
+    box[simlammps.hasPart] += {face_x, face_y, face_z}
 
-# create a molecular dynamics model
-md_nve = simlammps_ontology.MolecularDynamics()
+    # create a molecular dynamics model
+    md_nve = simlammps.MolecularDynamics()
 
-# create a new solver component:
-sp = simlammps_ontology.SolverParameter()
+    # create a new solver component:
+    sp = simlammps.SolverParameter()
 
-# integration time:
-steps = 100
-itime = simlammps_ontology.IntegrationTime(steps=steps)
+    # integration time:
+    steps = 100
+    itime = simlammps.IntegrationTime(steps=steps)
 
-sp.add(itime)
-verlet = simlammps_ontology.Verlet()
+    sp[simlammps.hasPart] += itime
+    verlet = simlammps.Verlet()
 
-sp.add(verlet)
+    sp[simlammps.hasPart] += verlet
 
+    # define the interatomic force as material relation
+    lj = simlammps.LennardJones612(
+        cutoffDistance=2.5, energyWellDepth=1.0, vanDerWaalsRadius=1.0
+    )
+    lj[simlammps.hasPart] += {material_a, material_b}
 
-# define the interatomic force as material relation
-lj = simlammps_ontology.LennardJones612(
-    cutoffDistance=2.5, energyWellDepth=1.0, vanDerWaalsRadius=1.0
+    session_a.add(set(workspace))
+    session_b.add(set(workspace))
+
+    material_a = session_a.from_identifier(material_a.identifier)
+    material_b = session_b.from_identifier(material_b.identifier)
+
+atom_a = simlammps.Atom(session=session_a)
+position_a = simlammps.Position(vector=[3, 2, 3], session=session_a)
+atom_a[simlammps.hasPart] += {material_a, position_a}
+
+atom_b = simlammps.Atom(session=session_b)
+position_b = simlammps.Position(vector=[3, 5, 3], session=session_b)
+atom_b[simlammps.hasPart] += {material_b, position_b}
+
+video_a = simlammps.Video(steps=2, height=640, width=480, session=session_a)
+video_b = simlammps.Video(steps=2, height=640, width=480, session=session_b)
+
+session_a.compute()
+session_b.compute()
+
+velocity_a = atom_a.get(oclass=simlammps.Velocity).any() or simlammps.Velocity(
+    vector=(0, 0, 0), session=session_a
 )
-lj.add(material_a)
-lj.add(material_b)
+velocity_a.vector = (0, 5, 0)
+atom_a[simlammps.hasPart] += velocity_a
 
+velocity_b = atom_b.get(oclass=simlammps.Velocity).any() or simlammps.Velocity(
+    vector=(0, 0, 0), session=session_b
+)
+velocity_b.vector = (0, -5, 0)
+atom_b[simlammps.hasPart] += velocity_b
 
-wrapper_a.add(material_a, material_b, box, md_nve, sp, lj)
-wrapper_b.add(material_a, material_b, box, md_nve, sp, lj)
+sp_a = session_a.get(oclass=simlammps.SolverParameter).one()
+sp_a.get(oclass=simlammps.IntegrationTime).one().steps = 1
 
-
-atom_a = simlammps_ontology.Atom(session=sess_a)
-
-position_a = simlammps_ontology.Position(vector=(3, 2, 3), session=sess_a)
-atom_a.add(material_a, position_a)
-
-atom_b = simlammps_ontology.Atom(session=sess_b)
-position_b = simlammps_ontology.Position(vector=(3, 5, 3), session=sess_b)
-atom_b.add(material_b, position_b)
-
-wrapper_a.add(atom_a)
-wrapper_b.add(atom_b)
-
-wrapper_a.add(simlammps_ontology.Video(steps=2, name="coupling_linking_a.mp4"))
-wrapper_b.add(simlammps_ontology.Video(steps=2, name="coupling_linking_b.mp4"))
-
-wrapper_a.session.run()
-wrapper_b.session.run()
-
-velocity_a = simlammps_ontology.Velocity(vector=(0, 5, 0), session=sess_a)
-velocity_b = simlammps_ontology.Velocity(vector=(0, -5, 0), session=sess_b)
-
-atom_a.add(velocity_a)
-atom_b.add(velocity_b)
-
-
-sp_a = wrapper_a.get(oclass=simlammps_ontology.SolverParameter)[0]
-sp_a.get(oclass=simlammps_ontology.IntegrationTime)[0].steps = 1
-
-sp_b = wrapper_b.get(oclass=simlammps_ontology.SolverParameter)[0]
-sp_b.get(oclass=simlammps_ontology.IntegrationTime)[0].steps = 1
+sp_b = session_b.get(oclass=simlammps.SolverParameter).one()
+sp_b.get(oclass=simlammps.IntegrationTime).one().steps = 1
 
 
 while abs(position_a.vector[1] - position_b.vector[1]) > 0.7:
-    wrapper_a.session.run()
-    wrapper_b.session.run()
+    session_a.compute()
+    session_b.compute()
 
 
 velocity_a.vector, velocity_b.vector = velocity_b.vector, velocity_a.vector
 
-sp_a.get(oclass=simlammps_ontology.IntegrationTime)[0].steps = 100
-sp_b.get(oclass=simlammps_ontology.IntegrationTime)[0].steps = 100
+sp_a.get(oclass=simlammps.IntegrationTime).one().steps = 100
+sp_b.get(oclass=simlammps.IntegrationTime).one().steps = 100
 
-wrapper_a.session.run()
-wrapper_b.session.run()
+session_a.compute()
+session_b.compute()
+
+# video_a.operations.download('video_a.mp4')
+# video_b.operations.download('video_b.mp4')

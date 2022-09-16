@@ -1,0 +1,41 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  PEP8:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Flake8
+        run: flake8 . --ignore=E203,W503 --docstring-convention=google
+
+      # Includes isort, black and other checks, see `.pre-commit.config.yaml`.
+      - name: pre-commit
+        run: pre-commit run --all-files
+
+  complexity:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Radon
+        run: |
+          radon cc -s -a .,
+          radon mi -s .
+
+  security:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Bandit
+        run: bandit -r osp --skip B101
+
+  testing:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: tox
+        run: tox
