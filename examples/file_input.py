@@ -1,71 +1,67 @@
-from osp.core.namespaces import simlammps_ontology
+"""Example showing how to set up a simulation using a LAMMPS script."""
 
-from osp.wrappers.simlammps import SimlammpsSession
-from osp.wrappers.simlammps.utils import LammpsInputScript
+from simphony_osp.namespaces import simlammps
+from simphony_osp.wrappers import SimLAMMPS
 
-lammps_wrapper = simlammps_ontology.SimlammpsWrapper(session=SimlammpsSession())
+from simphony_osp_simlammps.utils import LAMMPSInputScript
 
-mass = simlammps_ontology.Mass(value=0.2)
-material = simlammps_ontology.Material()
+lammps_session = SimLAMMPS("examples/data_input_from_sim.lammps")
+lammps_session.locked = True
 
-material.add(mass)
-lammps_wrapper.add(material)
+with lammps_session:
+    mass = simlammps.Mass(value=0.2)
+    material = simlammps.Material()
 
+    material[simlammps.hasPart] += mass
 
-input_file = LammpsInputScript("examples/data_input_from_sim.lammps")
-input_file.parse()
+    input_file = LAMMPSInputScript("examples/data_input_from_sim.lammps")
+    input_file.parse()
 
-for coordinates, velocity in input_file.atom_information_generator():
-    particle = simlammps_ontology.Atom()
-    position = simlammps_ontology.Position(vector=coordinates)
-    velocity = simlammps_ontology.Velocity(vector=velocity)
-    particle.add(material, position, velocity)
-    lammps_wrapper.add(particle)
+    for coordinates, velocity in input_file.atom_information_generator():
+        particle = simlammps.Atom()
+        position = simlammps.Position(vector=coordinates)
+        velocity = simlammps.Velocity(vector=velocity)
+        particle[simlammps.hasPart] += {material, position, velocity}
 
-vector_x, vector_y, vector_z = input_file.box_coordinates()
-box = simlammps_ontology.SimulationBox(name="simulation_box")
-face_x = simlammps_ontology.FaceX(vector=vector_x)
-face_x.add(simlammps_ontology.Periodic())
-face_y = simlammps_ontology.FaceY(vector=vector_y)
-face_y.add(simlammps_ontology.Periodic())
-face_z = simlammps_ontology.FaceZ(vector=vector_z)
-face_z.add(simlammps_ontology.Periodic())
-box.add(face_x, face_y, face_z)
-lammps_wrapper.add(box)
+    vector_x, vector_y, vector_z = input_file.box_coordinates()
+    box = simlammps.SimulationBox()
+    face_x = simlammps.FaceX(vector=vector_x)
+    face_y = simlammps.FaceY(vector=vector_y)
+    face_y[simlammps.hasPart] += simlammps.Periodic()
+    face_z = simlammps.FaceZ(vector=vector_z)
+    face_z[simlammps.hasPart] += simlammps.Periodic()
+    box[simlammps.hasPart] += {face_x, face_y, face_z}
 
-md_nve = simlammps_ontology.MolecularDynamics()
-lammps_wrapper.add(md_nve)
+    md_nve = simlammps.MolecularDynamics()
 
-sp = simlammps_ontology.SolverParameter()
+    solver_parameters = simlammps.SolverParameter()
 
-# integration time:
-steps = 1000
-itime = simlammps_ontology.IntegrationTime(steps=steps)
+    # integration time:
+    steps = 1000
+    itime = simlammps.IntegrationTime(steps=steps)
 
-sp.add(itime)
-verlet = simlammps_ontology.Verlet()
+    solver_parameters[simlammps.hasPart] += itime
+    verlet = simlammps.Verlet()
 
-sp.add(verlet)
-lammps_wrapper.add(sp)
+    solver_parameters[simlammps.hasPart] += verlet
 
-lj = simlammps_ontology.LennardJones612(
-    cutoffDistance=2.5, energyWellDepth=1.0, vanDerWaalsRadius=1.0
-)
+    lj = simlammps.LennardJones612(
+        cutoffDistance=2.5, energyWellDepth=1.0, vanDerWaalsRadius=1.0
+    )
 
-lj.add(material)
-lammps_wrapper.add(lj)
+    lj[simlammps.hasPart] += material
 
-# lammps_wrapper.add(simlammps_ontology.Video(steps=10, name="file_input.mp4"))
-lammps_wrapper.session.run()
+    video = simlammps.Video(steps=10, width=640, height=480)
+lammps_session.compute()
 
 # Update the box dimensions
-proxy_box = lammps_wrapper.get(oclass=simlammps_ontology.SimulationBox)[0]
-proxy_box.get(oclass=simlammps_ontology.FaceX)[0].vector = (15, 0, 0)
-proxy_box.get(oclass=simlammps_ontology.FaceY)[0].vector = (0, 15, 0)
-proxy_box.get(oclass=simlammps_ontology.FaceZ)[0].vector = (0, 0, 15)
+proxy_box = lammps_session.get(oclass=simlammps.SimulationBox).one()
+proxy_box.get(oclass=simlammps.FaceX).one().vector = (15, 0, 0)
+proxy_box.get(oclass=simlammps.FaceY).one().vector = (0, 15, 0)
+proxy_box.get(oclass=simlammps.FaceZ).one().vector = (0, 0, 15)
 
 # Change the number of steps
-solver_parameter = lammps_wrapper.get(oclass=simlammps_ontology.SolverParameter)[0]
-solver_parameter.get(oclass=simlammps_ontology.IntegrationTime)[0].steps = 275
+solver_parameter = lammps_session.get(oclass=simlammps.SolverParameter).one()
+solver_parameter.get(oclass=simlammps.IntegrationTime).one().steps = 275
 
-lammps_wrapper.session.run()
+lammps_session.compute()
