@@ -207,7 +207,7 @@ class SimLAMMPS(Wrapper):
         position: OntologyIndividual,
         ontology_atom: Optional[OntologyIndividual] = None,
     ):
-        """Updates a given position object with the latest values in the engine.
+        """Update a given position object with the latest values in the engine.
 
         Args:
             position: position object to update.
